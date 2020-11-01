@@ -31,12 +31,8 @@ INSERT INTO public.checktime( date, time, iduser, inout) VALUES ('20-10-20', '8:
 ```
 
 
-```
-source /home/serg/Desktop/face_recognition/bin/activate
 
 
-python3 video_recognition.py --cascade haarcascade_frontalface_default.xml --encodings encodings.pickle
-```
 
 
 
