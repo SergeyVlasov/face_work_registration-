@@ -24,7 +24,7 @@ var database *sql.DB
 
 func main() {
 
-	db, err := sql.Open("postgres", "dbname=worktime user=postgres password=poilo777 host=localhost sslmode=disable")
+	db, err := sql.Open("postgres", "dbname=worktime user=postgres password=password host=localhost sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
