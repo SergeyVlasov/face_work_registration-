@@ -1,6 +1,58 @@
 # face_work_registration-
 
 
+1) тренировка модели 
+ создаем виртуальное кружение
+- python3 -m virtualenv /path/MyEnv
+активируем виртуальное окружение
+- source /path/MyEnv/bin/activate
+устанавливаем все необходимые библиотеки
+- pip3 install opencv-python
+- pip3 install dlib
+- pip3 install face_recognition
+- pip3 install imutils
+** если возникают проблемы на этапе установки dlib, то попробуйте установить pip install cmake
+
+моздаем директорию для проекта
+- mkdir face_recognition
+- cd face_recognition
+создаем папку для обучающей выборки а в ней подпапки с соответствующей персоной, и наполняем их соответствующими фото
+- mkdir dataset
+- cd dataset
+- mkdir person1
+- mkdir person2 ....
+копируем github
+- git clone https://github.com/SergeyVlasov/face_recognition
+загружаем файл модели
+- wget https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml
+проект должен иметь структуру
+```
+├── dataset
+│   ├── Person1
+│   │   ├── 001.jpg
+│   │   ├── 002.jpg
+│   │   ├── 003.jpg
+│   │   ├── 004.jpg
+│   │   ├── 005.jpg
+│   │   ├── 006.jpg
+│   │   ├── 007.jpg
+│   │   └── 008.jpeg
+│   ├── Person2
+│      ├── 001.jpg
+│      ├── 002.jpg
+│      ├── 003.jpg
+│      ├── 004.jpg
+│      └── 005.jpg
+├── encodings.pickle
+├── face-encoding.py
+├── face-recognition-video.py
+└── haarcascade_frontalface_default.xml
+```
+подготавливаем датасет
+- python3 data_encoding.py --dataset dataset --encodings encodings.pickle --detection-method hog
+
+
+
 
 1) создание БД в Postgres
 
