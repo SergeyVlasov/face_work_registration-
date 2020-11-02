@@ -2,6 +2,8 @@
 
 
 1) тренировка модели 
+
+
  создаем виртуальное кружение
 - python3 -m virtualenv /path/MyEnv
 активируем виртуальное окружение
@@ -51,10 +53,29 @@
 подготавливаем датасет
 - python3 data_encoding.py --dataset dataset --encodings encodings.pickle --detection-method hog
 
+2) распознавание лиц
 
+создаем виртуальное кружение
+- python3 -m virtualenv /path/MyEnv
+активируем виртуальное окружение
+- source /path/MyEnv/bin/activate
+устанавливаем все необходимые библиотеки
+- pip3 install opencv-python
+- pip3 install dlib
+- pip3 install face_recognition
+- pip3 install imutils
+** если возникают проблемы на этапе установки dlib, то попробуйте установить pip install cmake
 
+копируем 2 файла (с системы где осуществлялось обучение)
 
-1) создание БД в Postgres
+- haarcascade_frontalface_default.xml
+- encodings.pickle
+
+запускаем файл распознавания
+
+- python3 video_recognition.py --cascade haarcascade_frontalface_default.xml --encodings encodings.pickle
+
+3) создание БД в Postgres
 
 ```
 sudo -i -u postgres psql
