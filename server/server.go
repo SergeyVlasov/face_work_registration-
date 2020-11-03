@@ -12,8 +12,8 @@ import (
     //"time"
 	"strings"
 	
-
-    
+    "os"
+    "strconv"
 )
 
 
@@ -23,13 +23,31 @@ var database *sql.DB
 
 
 func main() {
+	// read config
+	file, err := os.Open("dbconfig.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	data := make([]byte, 100)
+	config, err := file.Read(data)
+	if err != nil {
+		log.Fatal(err)
+	}
+    //fmt.Println(string(data[:config]))
 
-	db, err := sql.Open("postgres", "dbname=worktime user=postgres password=password host=localhost sslmode=disable")
+	//db, err := sql.Open("postgres", "dbname=worktime user=postgres password=poilo777 host=localhost sslmode=disable")
+	db, err := sql.Open("postgres", string(data[:config]))
+	
 	if err != nil {
 		log.Fatal(err)
 	}
 	database = db
 	defer db.Close()
+
+
+
+	
 
 
     router := mux.NewRouter()
@@ -86,14 +104,67 @@ func AddCheck(w http.ResponseWriter, r *http.Request) {
 	time := str_handle(vars["time"])
 	iduser := str_handle(vars["iduser"])
 	inout := str_handle(vars["inout"])
-    rows, err := database.Query("INSERT INTO public.checktime(date, time, iduser, inout) VALUES ('" + date + "', '" + time + "', " + iduser + "," + inout + ");")
+
+	//fmt.Println(CheckPeriodTime(iduser,date, time))
+
+	// проверка когда была сделана последняя запись (чтобы не дублировать близкие по времени)
+	type Time struct {
+		Value  string
+	}
+	row, err := database.Query("SELECT \"time\" FROM public.checktime WHERE iduser = "+iduser+" AND date = '"+date+"' ORDER BY  time DESC LIMIT 1;")  // запрос последнего времени
 	if err != nil {
 		log.Println(err)
-	} 
-	defer rows.Close()
+	}
+	defer row.Close()
+	time_current := []Time{}
+	for row.Next() {
+		p := Time{}
+		err := row.Scan(&p.Value)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		time_current = append(time_current, p)
+	}
 
+	//fmt.Println(time_current[0].Value)
+
+	// сравнение последнего времени в базе с текущим
+	if (len(time_current) != 0 ) {
+		time_in_base := time_current[0].Value
+		
+		if (time_in_base != "") {
+			time_current := strings.Split(time, ":")
+			time_compare := strings.Split(time_in_base, ":")
+	
+			a1, _ := strconv.Atoi(time_current[0]) 
+			a2, _ := strconv.Atoi(time_current[1]) 
+			a3, _ := strconv.Atoi(time_current[2]) 
+			b1, _ := strconv.Atoi(time_compare[0])
+			b2, _ := strconv.Atoi(time_compare[1])
+			b3, _ := strconv.Atoi(time_compare[2])
+	
+	
+			time_different := (a1*3600 + a2*60 + a3) - (b1*3600 + b2*60 + b3)
+	
+			//если прошлая запись былас делана не более 10 секунд назад то вносим новую запись
+			if (time_different > 10) {
+				// вносим запись если последняя была сделана не недавно
+				rows, err := database.Query("INSERT INTO public.checktime(date, time, iduser, inout) VALUES ('" + date + "', '" + time + "', " + iduser + "," + inout + ");")
+	            if err != nil {
+		            log.Println(err)
+	            }   
+	            defer rows.Close()
+			}
+		}
+	}
+	
+	
 
 }
+
+
+
 
 
 // security block 
