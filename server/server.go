@@ -144,7 +144,7 @@ func AddCheck(w http.ResponseWriter, r *http.Request) {
 	
 			time_different := (a1*3600 + a2*60 + a3) - (b1*3600 + b2*60 + b3)
 	
-			//если прошлая запись была сделана не более 10 секунд назад то вносим новую запись
+			//если прошлая запись была сделана не менее 10 секунд назад то вносим новую запись
 			if (time_different > 10) {
 				// вносим запись если последняя была сделана не недавно
 				rows, err := database.Query("INSERT INTO public.checktime(date, time, iduser, inout) VALUES ('" + date + "', '" + time + "', " + iduser + "," + inout + ");")
