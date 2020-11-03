@@ -50,8 +50,11 @@
 ├── face-recognition-video.py
 └── haarcascade_frontalface_default.xml
 ```
-подготавливаем датасет
+подготавливаем датасет и тренируем модель
 - python3 data_encoding.py --dataset dataset --encodings encodings.pickle --detection-method hog
+
+---------------------------------------------------------------------------------
+
 
 2) распознавание лиц
 на компьютере, еотором осуществляется распознавание, тоже нужно установить все библиотеки
@@ -74,6 +77,9 @@
 запускаем файл распознавания
 
 - python3 video_recognition.py --cascade haarcascade_frontalface_default.xml --encodings encodings.pickle
+
+
+---------------------------------------------------------------------------------
 
 3) создание БД в Postgres
 
