@@ -52,7 +52,7 @@
 └── haarcascade_frontalface_default.xml
 ```
 подготавливаем датасет и тренируем модель
-- python3 data_encoding.py --dataset dataset --encodings encodings.pickle --detection-method hog
+- python3 train.py --dataset dataset --encodings encodings.pickle --detection-method hog
 
 ---------------------------------------------------------------------------------
 
