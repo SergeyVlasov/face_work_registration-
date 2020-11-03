@@ -40,15 +40,13 @@
 │   │   ├── 006.jpg
 │   │   ├── 007.jpg
 │   │   └── 008.jpeg
-│   ├── Person2
+│   └── Person2
 │      ├── 001.jpg
 │      ├── 002.jpg
 │      ├── 003.jpg
 │      ├── 004.jpg
 │      └── 005.jpg
-├── encodings.pickle
-├── face-encoding.py
-├── face-recognition-video.py
+├── train.py
 └── haarcascade_frontalface_default.xml
 ```
 подготавливаем датасет и тренируем модель
