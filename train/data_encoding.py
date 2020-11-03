@@ -1,5 +1,5 @@
-# PENGGUNAAN
-# python face-encoding.py --dataset dataset --encodings encodings.pickle --detection-method hog
+
+# python train.py --dataset dataset --encodings encodings.pickle --detection-method hog
 
 
 from imutils import paths
