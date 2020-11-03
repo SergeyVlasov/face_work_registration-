@@ -2,7 +2,6 @@
 
 # python3 video_recognition.py --cascade haarcascade_frontalface_default.xml --encodings encodings.pickle
 
-# import library yang di perlukan
 from imutils.video import VideoStream
 from imutils.video import FPS
 import face_recognition
@@ -16,7 +15,7 @@ import datetime
 import requests
 
 
-# Parsing Argumen
+# Parsing
 ap = argparse.ArgumentParser()
 ap.add_argument("-c", "--cascade", required=True,
 	help = "path to where the face cascade resides")
@@ -34,7 +33,6 @@ print("[INFO] Stream Camera...")
 vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
-# Penghitung FPS (Frame per Second)
 fps = FPS().start()
 
 # loop 
@@ -73,9 +71,15 @@ while True:
                                 
 				counts[name] = counts.get(name, 0) + 1
 			name = max(counts, key=counts.get)
-		print(name + " " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+		#print(name + " " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+		date_of_event = datetime.datetime.now().strftime('%Y-%m-%d')
+		time_of_event = datetime.datetime.now().strftime('%H:%M:%S')
+
 		if name == 'yakubovich':
-			requests.get('http://localhost:8080/'+ datetime.datetime.now().strftime('%Y-%m-%d') +'/'+ datetime.datetime.now().strftime('%H:%M:%S') +'/1/1')
+			requests.get('http://localhost:8080/'+ date_of_event +'/'+ time_of_event +'/1/1')
+		elif name == 'yanukovich':
+		    requests.get('http://localhost:8080/'+ date_of_event +'/'+ time_of_event +'/2/1')
+		
 		names.append(name)
                 
 
@@ -91,13 +95,13 @@ while True:
 	
 	cv2.imshow("Frame", frame)
 	key = cv2.waitKey(1) & 0xFF
-
 	
 	if key == ord("q"):
 		break
 
 	# update FPS
 	fps.update()
+	time.sleep(1)
 
 #  info FPS
 fps.stop()
