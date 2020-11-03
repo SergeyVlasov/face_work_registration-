@@ -54,7 +54,7 @@
 - python3 data_encoding.py --dataset dataset --encodings encodings.pickle --detection-method hog
 
 2) распознавание лиц
-
+на компьютере, еотором осуществляется распознавание, тоже нужно установить все библиотеки
 создаем виртуальное кружение
 - python3 -m virtualenv /path/MyEnv
 активируем виртуальное окружение
