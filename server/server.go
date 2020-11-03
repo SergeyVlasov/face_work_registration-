@@ -9,7 +9,7 @@ import (
 	"net/http"
 	_ "github.com/lib/pq"
 	"github.com/gorilla/mux"
-    //"time"
+
 	"strings"
 	
     "os"
@@ -23,7 +23,7 @@ var database *sql.DB
 
 
 func main() {
-	// read config
+	// конфиг подключения к БД
 	file, err := os.Open("dbconfig.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -34,7 +34,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-    //fmt.Println(string(data[:config]))
+
 
 	//db, err := sql.Open("postgres", "dbname=worktime user=postgres password=poilo777 host=localhost sslmode=disable")
 	db, err := sql.Open("postgres", string(data[:config]))
@@ -105,8 +105,6 @@ func AddCheck(w http.ResponseWriter, r *http.Request) {
 	iduser := str_handle(vars["iduser"])
 	inout := str_handle(vars["inout"])
 
-	//fmt.Println(CheckPeriodTime(iduser,date, time))
-
 	// проверка когда была сделана последняя запись (чтобы не дублировать близкие по времени)
 	type Time struct {
 		Value  string
@@ -144,10 +142,9 @@ func AddCheck(w http.ResponseWriter, r *http.Request) {
 			b2, _ := strconv.Atoi(time_compare[1])
 			b3, _ := strconv.Atoi(time_compare[2])
 	
-	
 			time_different := (a1*3600 + a2*60 + a3) - (b1*3600 + b2*60 + b3)
 	
-			//если прошлая запись былас делана не более 10 секунд назад то вносим новую запись
+			//если прошлая запись была сделана не более 10 секунд назад то вносим новую запись
 			if (time_different > 10) {
 				// вносим запись если последняя была сделана не недавно
 				rows, err := database.Query("INSERT INTO public.checktime(date, time, iduser, inout) VALUES ('" + date + "', '" + time + "', " + iduser + "," + inout + ");")
