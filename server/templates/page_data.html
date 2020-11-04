@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+
+
+function ifelsefunction() {
+var selyear = document.getElementById("selyear").value;
+var selmounth = document.getElementById("selmounth").value;
+var seldate = document.getElementById("seldate").value;
+
+    window.open(window.location.href + "/" + selyear + "-" + selmounth + "-" + seldate);
+
+}
+</script>
+
+</head>
+
+<body>
+<div class="ifelsediv">
+<label>Год: </label>
+<select id="selyear">
+<option value="2020">2020</option>
+<option value="2021">2021</option>
+<option value="2022">2022</option>
+</select>
+</div>
+
+<div class="ifelsediv">
+    <label>Месяц: </label>
+    <select id="selmounth">
+    <option value="01">январь</option>
+    <option value="02">февраль</option>
+    <option value="03">март</option>
+    <option value="04">апрель</option>
+    <option value="05">май</option>
+    <option value="06">июнь</option>
+    <option value="07">июль</option>
+    <option value="08">август</option>
+    <option value="09">сентябрь</option>
+    <option value="10">октябрь</option>
+    <option value="11">ноябрь</option>
+    <option value="12">декабрь</option>
+    </select>
+    </div>
+
+ <div class="ifelsediv">
+        <label>Число: </label>
+        <select id="seldate">
+        <option value="01">1</option>
+        <option value="02">2</option>
+        <option value="03">3</option>
+        <option value="04">4</option>
+        <option value="05">5</option>
+        <option value="06">6</option>
+        <option value="07">7</option>
+        <option value="08">8</option>
+        <option value="09">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25">25</option>
+        <option value="26">26</option>
+        <option value="27">27</option>
+        <option value="28">28</option>
+        <option value="29">29</option>
+        <option value="30">30</option>
+        <option value="31">31</option>
+        </select>
+        </div>    
+
+</body>
+<button onclick="ifelsefunction()">выбать дату</button>
+</html> 
