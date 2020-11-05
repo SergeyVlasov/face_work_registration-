@@ -168,7 +168,7 @@ func AddCheck(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println(time_current[0].Value)
 
 	// сравнение последнего времени в базе с текущим
-	if (len(time_current) != 0 ) {
+	if (len(time_current) != 0 ) {  // если запись вносится не первый раз за текущую дату
 		time_in_base := time_current[0].Value
 		
 		if (time_in_base != "") {
@@ -195,8 +195,13 @@ func AddCheck(w http.ResponseWriter, r *http.Request) {
 	            }   
 	            defer rows.Close()
 			}
-		}
-	}
+		 }
+		}  else { // если запись вносится сегодня впервые проверки не требуется
+			rows, err := database.Query("INSERT INTO public.checktime(date, time, iduser, inout) VALUES ('" + date + "', '" + time + "', " + iduser + "," + inout + ");")
+	            if err != nil {
+		            log.Println(err)
+		    }	    
+	
 }
 
 
