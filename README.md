@@ -28,6 +28,8 @@
 
 загружаем файл модели
 - wget https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml
+
+
 проект должен иметь структуру
 ```
 ├── dataset
@@ -109,6 +111,8 @@ inout int);
 
 INSERT INTO public.checktime( date, time, iduser, inout) VALUES ('20-10-20', '8:00', 1, 1);
 ```
+
+---------------------------------------------------------------------------------
 
 4) библиотеки, наобходимые для Go (серверная часть)
 
