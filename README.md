@@ -110,6 +110,10 @@ inout int);
 INSERT INTO public.checktime( date, time, iduser, inout) VALUES ('20-10-20', '8:00', 1, 1);
 ```
 
+4) библиотеки, наобходимые для Go (серверная часть)
+
+- go get github.com/gorilla/mux
+- go get github.com/lib/pq
 
 
 
