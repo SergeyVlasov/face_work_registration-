@@ -1,1 +1,1 @@
-dbname=worktime user=postgres password=poilo777 host=localhost sslmode=disable
+dbname=worktime user=postgres password=password host=localhost sslmode=disable
