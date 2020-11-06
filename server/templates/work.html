@@ -8,24 +8,33 @@
 
     
   <div class='wrapper'>
+    <h1>Посещение работы</h1>
           <table>
-              <thead><th>Время</th><th>Вход/выход</th></thead>
-              {{range . }}
+              <thead><th>Время</th></thead>
+              {{range .TimeIn }}
               <tr>
-                  <td>{{.Time}}</td>
-                  <td>  </td>
-                  <td>{{.Inout}}</td>
+                  <td>{{.Timein}}</td>
               </tr>
               {{end}}
           </table>
+
+
+          <h1>Выход с работы</h1>
+          <table>
+            <thead><th>Время</th></thead>
+            {{range .TimeOut }}
+            <tr>
+                <td>{{.Timeout}}</td>
+            </tr>
+            {{end}}
+        </table>
+
+
   </div>
    
 
 </form>
-
-
-
-    
+ 
 </html>
 
 
