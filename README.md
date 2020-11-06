@@ -2,7 +2,7 @@
 
 в целом архитектура следующая
 
-
+![Image alt](https://github.com/SergeyVlasov/face_work_registration-/blob/main/sceme.jpeg)
 
 
 1) тренировка модели 
