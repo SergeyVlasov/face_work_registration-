@@ -52,6 +52,9 @@ func main() {
 
     router := mux.NewRouter()
 	router.HandleFunc("/", MainPageHandler)
+
+
+
 	router.HandleFunc("/{iduser}", DatePageHandler)
 	router.HandleFunc("/{iduser}/{date}", WorktimePage)
 	router.HandleFunc("/{date}/{time}/{iduser}/{inout}", AddCheck)
@@ -104,34 +107,67 @@ func DatePageHandler(w http.ResponseWriter, r *http.Request) { // находим
 
 
 
-func WorktimePage(w http.ResponseWriter, r *http.Request) { // страница записей
+func WorktimePage(w http.ResponseWriter, r *http.Request) { // страница записей 2 таблицы вход/выход
 	vars := mux.Vars(r)
 	iduser := str_handle(vars["iduser"])
 	date := str_handle(vars["date"])
 
-	type Work struct {
-	    Time  string
-		Inout  int
+
+	type TimeIN struct {
+		Timein  string
 	}
 
-	rows, err := database.Query("select  time, inout from public.checktime WHERE iduser = "+iduser+" AND date = '"+date+"';")
-	if err != nil {
-		log.Println(err)
+	type TimeOUT struct {
+		Timeout  string
 	}
-	defer rows.Close()
-	work_current := []Work{}
-	for rows.Next() {
-		p := Work{}
-		err := rows.Scan(&p.Time, &p.Inout)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-		work_current = append(work_current, p)
-	}
-	tmpl, _ := template.ParseFiles("templates/work.html")
-	//w.Header().Set("Content-Type", "text/html")
-	tmpl.Execute(w, work_current)
+	
+	var Data struct {
+        TimeIn []TimeIN
+        TimeOut []TimeOUT
+    }
+
+    rows1, err := database.Query("select  time from public.checktime WHERE iduser = "+iduser+" AND date = '"+date+"' AND inout = 1;")
+    if err != nil {
+        log.Println(err)
+        return
+    }
+    defer rows1.Close()
+
+    for rows1.Next() {
+        u := TimeIN{}
+        if err := rows1.Scan(&u.Timein); err != nil {
+            log.Println(err)
+            continue
+        }
+        Data.TimeIn = append(Data.TimeIn, u)
+    }
+
+    rows2, err := database.Query("select  time from public.checktime WHERE iduser = "+iduser+" AND date = '"+date+"' AND inout = 0;")
+    if err != nil {
+        log.Println(err)
+        return
+    }
+    defer rows2.Close()
+
+    for rows2.Next() {
+        a := TimeOUT{}
+        if err := rows2.Scan(&a.Timeout); err != nil {
+            log.Println(err)
+            continue
+        }
+        Data.TimeOut = append(Data.TimeOut, a)
+    }
+
+	
+    tmpl, err := template.ParseFiles("templates/work.html")
+    if err != nil {
+        log.Println(err)
+        return
+    }
+    if err := tmpl.Execute(w, Data); err != nil {
+        log.Println(err)
+    }
+
 
 }
 
@@ -168,7 +204,7 @@ func AddCheck(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println(time_current[0].Value)
 
 	// сравнение последнего времени в базе с текущим
-	if (len(time_current) != 0 ) {  // если запись вносится не первый раз за текущую дату
+	if (len(time_current) != 0 ) {      
 		time_in_base := time_current[0].Value
 		
 		if (time_in_base != "") {
@@ -185,23 +221,26 @@ func AddCheck(w http.ResponseWriter, r *http.Request) {
 	
 			time_different := (a1*3600 + a2*60 + a3) - (b1*3600 + b2*60 + b3)  // подсчет сколько времени прошло с последней записи
 	
-			//fmt.Println(time_different)
+			fmt.Println(time_different)
 	
-			if (time_different > 5) {
+			if (time_different > 10) {
 				// вносим запись если последняя была сделана не недавно
 				rows, err := database.Query("INSERT INTO public.checktime(date, time, iduser, inout) VALUES ('" + date + "', '" + time + "', " + iduser + "," + inout + ");")
-	            if err != nil {
+				fmt.Println("Распознан user с id=" + iduser + "  время: " + time + " дата: " + date)
+				if err != nil {
 		            log.Println(err)
 	            }   
 	            defer rows.Close()
 			}
-		 }
-		}  else { // если запись вносится сегодня впервые проверки не требуется
-			rows, err := database.Query("INSERT INTO public.checktime(date, time, iduser, inout) VALUES ('" + date + "', '" + time + "', " + iduser + "," + inout + ");")
-	            if err != nil {
+		}
+	} else {
+		rows, err := database.Query("INSERT INTO public.checktime(date, time, iduser, inout) VALUES ('" + date + "', '" + time + "', " + iduser + "," + inout + ");")
+				fmt.Println("Распознан user с id=" + iduser + "  время: " + time + " дата: " + date)
+				if err != nil {
 		            log.Println(err)
-		    }	    
-	
+	            }   
+	            defer rows.Close()
+	}
 }
 
 
@@ -221,3 +260,5 @@ func str_handle(inpt string) (outpt string) {
 	outpt = filter9
 	return outpt
 }
+
+
