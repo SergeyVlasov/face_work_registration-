@@ -28,7 +28,7 @@ print("[INFO] loading encodings + face detector...")
 data = pickle.loads(open(args["encodings"], "rb").read())
 detector = cv2.CascadeClassifier(args["cascade"])
 
-# Camera
+# Camera для прихода/ухода бедет разный src ( 0, 1 это одна камера, 2,3 - другая)
 print("[INFO] Stream Camera...")
 vs = VideoStream(src=0).start()
 time.sleep(2.0)
